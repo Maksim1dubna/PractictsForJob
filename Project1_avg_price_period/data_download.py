@@ -10,6 +10,5 @@ def add_moving_average(data, window_size=5):
     return data
 def calculate_and_display_average_price(data):
     price = data
-    lst = np.array(price['Close'].values).tolist()
-    average_of_list = sum(lst) / len(lst)
+    average_of_list = sum(price['Close'].values) / len(price['Close'].values)
     return average_of_list
