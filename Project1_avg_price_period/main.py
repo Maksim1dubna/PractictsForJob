@@ -9,6 +9,7 @@ def main():
 
     ticker = input("Введите тикер акции (например, «AAPL» для Apple Inc):»")
     period = input("Введите период для данных (например, '1mo' для одного месяца): ")
+    percentage_cls = float(input("Процент сильных колебаний цены акции (Закрытия): ")) # Задание 2 Уведомление о сильных колебаниях цены акции
 
     # Fetch stock data
     stock_data = dd.fetch_stock_data(ticker, period)
@@ -19,8 +20,17 @@ def main():
     # Plot the data
     dplt.create_and_save_plot(stock_data, ticker, period)
 
+    # Задание 1 Вывод средней цены за период
     avg = dd.calculate_and_display_average_price(stock_data)
-    print(f"Среднее закрытия за период: {avg}")
+    print(f"\nСреднее закрытия за период: {avg}")
+
+    # Задание 2 Уведомление о сильных колебаниях цены акции (максимальное и минимальное значения цены закрытия)
+    p_cls = dd.notify_if_strong_fluctuations(stock_data, percentage_cls)
+    if p_cls is None:
+        pass
+    else:
+        print(f"\nВнимание! Превышение порога {percentage_cls}%")
+        print(f"Разница цен за указанный период:{p_cls}%")
 
 if __name__ == "__main__":
     main()
