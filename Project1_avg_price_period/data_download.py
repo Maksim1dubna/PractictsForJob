@@ -25,5 +25,5 @@ def notify_if_strong_fluctuations(data, threshold): # Задание 2 Увед�
         return None
 
 def export_data_to_csv(data, file_name = 'table_stocks'): # Задание 3 Экспорт данных в CSV
-    data.to_csv(f'CSV_Tables/{file_name}.csv', sep='\t', encoding='utf-8', index=False, header=True)
+    data.to_csv(f'CSV_Tables/{file_name}.csv', sep=',', encoding='utf-8', index=False, header=True)
     return 0
