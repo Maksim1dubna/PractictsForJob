@@ -32,5 +32,8 @@ def main():
         print(f"\nВнимание! Превышение порога {percentage_cls}%")
         print(f"Разница цен за указанный период:{p_cls}%")
 
+    # Задание 3 Экспорт данных в CSV
+    dd.export_data_to_csv(stock_data, ticker) # В качестве названия пусть забирает выбранный тикер
+
 if __name__ == "__main__":
     main()

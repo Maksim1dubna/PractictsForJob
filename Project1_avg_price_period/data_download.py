@@ -1,3 +1,4 @@
+import csv
 import yfinance as yf
 import numpy as np
 def fetch_stock_data(ticker, period='1mo'):
@@ -22,3 +23,7 @@ def notify_if_strong_fluctuations(data, threshold): # Задание 2 Увед�
         return res_prc
     else:
         return None
+
+def export_data_to_csv(data, file_name = 'table_stocks'): # Задание 3 Экспорт данных в CSV
+    data.to_csv(f'CSV_Tables/{file_name}.csv', sep='\t')
+    return 0
