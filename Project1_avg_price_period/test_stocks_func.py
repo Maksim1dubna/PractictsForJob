@@ -6,12 +6,15 @@ import data_plotting as dplt
 import yfinance as yf
 import numpy as np
 
+
 class TestStocks(unittest.TestCase):
     def setUp(self, ticker='AAPL', period='1mo'):
         self.stock = yf.Ticker(ticker)
         self.data = self.stock.history(period=period)
+
     def test_task_avg_price_1(self, data):
         return 0
+
 
 if __name__ == '__main__':
     unittest.main()
