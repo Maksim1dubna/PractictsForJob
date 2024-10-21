@@ -1,4 +1,4 @@
-import csv
+import pandas as pd
 import yfinance as yf
 import numpy as np
 
@@ -38,3 +38,35 @@ def export_data_to_csv(data, file_name='table_stocks'):
     '''Задание 3 Экспорт данных в CSV'''
     data.to_csv(f'CSV_Tables/{file_name}.csv', sep=',', encoding='utf-8', index=False, header=True)
     return 0
+
+
+def tech_indicators(data, ndays=1, indicator='EVM'):
+    '''Задание 4 Добавление дополнительных технических индикаторов'''
+    if indicator == 'EVM':
+        dm = ((data['High'] + data['Low']) / 2) - ((data['High'].shift(1) + data['Low'].shift(1)) / 2)
+        br = (data['Volume'] / 100000000) / (data['High'] - data['Low'])
+        EVM = dm / br
+        EVM_MA = pd.Series(EVM.rolling(ndays).mean(), name='EVM')
+        data = data.join(EVM_MA)
+        return data
+    elif indicator == 'FI':
+        FI = pd.Series(data['Close'].diff(ndays) * data['Volume'], name='FI')
+        data = data.join(FI)
+        return data
+    else:
+        print("Такого индекса нет!")
+        return 0
+
+
+'''
+Ease of Movement (EMV) - показывает легкость, с которой цены растут или падают с учетом объема торгов ценной бумагой. 
+Например, рост цены при небольшом объеме означает, что цены росли относительно легко, 
+и давление со стороны продавцов было незначительным. 
+Положительные значения EVM означают, что рынок легко движется вверх, 
+а отрицательные значения указывают на легкость снижения.
+
+FI - Индекс силы учитывает направление движения цены акции, 
+протяженность движения цены акции и объем. 
+Используя эти три элемента, он формирует осциллятор, 
+который измеряет давление покупателей и продавцов.
+'''
