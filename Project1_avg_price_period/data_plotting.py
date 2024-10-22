@@ -24,6 +24,7 @@ def create_and_save_plot(data, ticker, period, filename=None):
             plt.legend()
             plt.subplot(2, 1, 2)
             plt.plot(dates, data_t_i[indicator].values, label=indicator)
+            plt.title(f"{indicator} технический индикатор")
             plt.legend()
         else:
             print("Информация о дате отсутствует или не имеет распознаваемого формата.")
