@@ -3,7 +3,7 @@ import pandas as pd
 import data_download as dd
 
 
-def create_and_save_plot(data, ticker, period, filename=None):
+def create_and_save_plot(data, ticker, period, filename=None, start = '', end = ''):
     '''
     Функция была отредактирована для отбражения графиков дополнительных технических индикаторов
     и добавление их в единый график
@@ -41,7 +41,7 @@ def create_and_save_plot(data, ticker, period, filename=None):
         plt.legend()
 
     if filename is None:
-        filename = f"charts/{ticker}_{period}_stock_price_chart.png"
+        filename = f"charts/{ticker}_{period}{start}_{end}stock_price_chart.png"
 
     plt.savefig(filename)
     print(f"График сохранен как {filename}")

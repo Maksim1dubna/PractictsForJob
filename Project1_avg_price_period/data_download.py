@@ -3,10 +3,15 @@ import yfinance as yf
 import numpy as np
 
 
-def fetch_stock_data(ticker, period='1mo'):
-    stock = yf.Ticker(ticker)
-    data = stock.history(period=period)
-    return data
+def fetch_stock_data(ticker, period='1mo', pick_date='', start='2024-01-01', end='2024-01-15'):
+    '''Задача №5. Реализовать функционал: Улучшенное управление временными периодами'''
+    if pick_date == 'да':
+        data = yf.download(ticker, start=start, end=end)
+        return data
+    else:
+        stock = yf.Ticker(ticker)
+        data = stock.history(period=period)
+        return data
 
 
 def add_moving_average(data, window_size=5):
