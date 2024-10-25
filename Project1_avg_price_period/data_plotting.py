@@ -3,12 +3,24 @@ import pandas as pd
 import data_download as dd
 
 
-def create_and_save_plot(data, ticker, period, filename=None, start = '', end = ''):
+def create_and_save_plot(data, ticker, period, filename=None, start='', end='', style_chart=''):
     '''
     Функция была отредактирована для отбражения графиков дополнительных технических индикаторов
     и добавление их в единый график
     '''
     plt.figure(figsize=(20, 12))
+    '''Задача 6. Реализовать функционал: Добавление параметра для выбора стиля графика
+    Добавлен style_chart
+    '''
+    match style_chart:
+        case '1':
+            plt.style.use('Solarize_Light2')
+        case '2':
+            plt.style.use('dark_background')
+        case '3':
+            plt.style.use('fast')
+        case '4':
+            plt.style.use('ggplot')
     indicator = 'EVM'
     data_t_i = dd.tech_indicators(data, ndays=10,
                                   indicator=indicator)  # Задание 4 Добавление дополнительных технических индикаторов

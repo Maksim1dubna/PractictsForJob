@@ -1,6 +1,5 @@
 import pandas as pd
 import yfinance as yf
-import numpy as np
 
 
 def fetch_stock_data(ticker, period='1mo', pick_date='', start='2024-01-01', end='2024-01-15'):
