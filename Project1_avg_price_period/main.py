@@ -51,6 +51,7 @@ def main():
     В качестве названия пусть забирает выбранный тикер'''
     dd.export_data_to_csv(stock_data, ticker)
 
+    dd.statistic_indicators(stock_data)
 
 if __name__ == "__main__":
     main()
