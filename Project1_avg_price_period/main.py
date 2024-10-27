@@ -15,7 +15,7 @@ def main():
     if pick_date == 'да':
         start = input("Введите начальную дату в формате '2024-01-01': ")
         end = input("Введите конечную дату в формате '2024-01-15': ")
-        period = ''
+        period = '1mo'
     else:
         start = ''
         end = ''
@@ -23,13 +23,18 @@ def main():
     percentage_cls = float(input("Процент сильных колебаний цены акции (Закрытия): "))
 
     # Fetch stock data
-    stock_data = dd.fetch_stock_data(ticker, period, start=start, end=end)
+    stock_data = dd.fetch_stock_data(ticker, period, pick_date, start=start, end=end)
 
     # Add moving average to the data
     stock_data = dd.add_moving_average(stock_data)
 
     # Plot the data
-    dplt.create_and_save_plot(stock_data, ticker, period, start=start, end=end, style_chart=style_chart)
+    dict_statistic_indicators = dd.statistic_indicators(stock_data)
+    '''
+    Задача №7. Расширенный анализ данных
+    словарь dict_statistic_indicators для дальнейшей визуализации в графике'''
+    dplt.create_and_save_plot(stock_data, ticker, period, start=start, end=end, style_chart=style_chart,
+                              dict_statistic_indicators=dict_statistic_indicators)
     '''Задача 6. Реализовать функционал: Добавление параметра для выбора стиля графика
     Добавлен style_chart
     '''
@@ -51,7 +56,6 @@ def main():
     В качестве названия пусть забирает выбранный тикер'''
     dd.export_data_to_csv(stock_data, ticker)
 
-    dd.statistic_indicators(stock_data)
 
 if __name__ == "__main__":
     main()
