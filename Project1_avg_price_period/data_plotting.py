@@ -1,8 +1,7 @@
-from pprint import pprint
 import matplotlib.pyplot as plt
 import pandas as pd
 import data_download as dd
-
+import plotly.graph_objects as go
 
 def create_and_save_plot(data, ticker, period, filename=None, start='', end='', style_chart='', dict_statistic_indicators = ''):
     '''
@@ -63,3 +62,14 @@ def create_and_save_plot(data, ticker, period, filename=None, start='', end='', 
 
     plt.savefig(filename)
     print(f"График сохранен как {filename}")
+
+    '''Задача №8. Интерактивный график'''
+    # Создать график
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=data.index, y=data['Close']))
+    # Настройка визуальной части
+    fig.update_layout(title=f"График акции {ticker} цен закрытия",
+                      yaxis_title="Цена",
+                      xaxis_rangeslider_visible=False)
+    # Вывод графика (Выведет в браузере по умолчанию)
+    fig.show()
