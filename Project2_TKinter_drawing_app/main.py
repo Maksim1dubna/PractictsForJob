@@ -18,6 +18,8 @@ class DrawingApp:
 
         self.last_x, self.last_y = None, None
         self.pen_color = 'black'
+        '''Для задания 2 запоминть последний цвет'''
+        self.l_color = 'black'
 
         self.canvas.bind('<B1-Motion>', self.paint)
         self.canvas.bind('<ButtonRelease-1>', self.reset)
@@ -46,6 +48,10 @@ class DrawingApp:
         self.brush_size_scale = tk.OptionMenu(control_frame, self.variable, *self.sizes)
         self.brush_size_scale.pack(side=tk.LEFT)
 
+        '''Задача №2. Реализовать функционал: Инструмент "Ластик"'''
+        self.eraser_button = tk.Button(control_frame, text="Ластик", command=self.eraser)
+        self.eraser_button.pack(side=tk.LEFT)
+
     def paint(self, event):
         if self.last_x and self.last_y:
             '''Задание 1. width теперь принимает self.variable.get() из brush_size_scale'''
@@ -68,6 +74,7 @@ class DrawingApp:
 
     def choose_color(self):
         self.pen_color = colorchooser.askcolor(color=self.pen_color)[1]
+        self.l_color = self.pen_color
 
     def save_image(self):
         file_path = filedialog.asksaveasfilename(filetypes=[('PNG files', '*.png')])
@@ -77,6 +84,15 @@ class DrawingApp:
             self.image.save(file_path)
             messagebox.showinfo("Информация", "Изображение успешно сохранено!")
 
+    '''Задача №2. Реализовать функционал: Инструмент "Ластик"'''
+
+    def eraser(self):
+        if self.pen_color == "white":
+            self.pen_color = self.l_color
+            self.eraser_button.configure(foreground='black')
+        else:
+            self.pen_color = "white"
+            self.eraser_button.configure(foreground = 'red')
 
 def main():
     root = tk.Tk()
