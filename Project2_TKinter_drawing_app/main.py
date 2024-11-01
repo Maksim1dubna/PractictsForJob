@@ -75,6 +75,7 @@ class DrawingApp:
     def choose_color(self):
         self.pen_color = colorchooser.askcolor(color=self.pen_color)[1]
         self.l_color = self.pen_color
+        self.eraser_button.configure(foreground='black')
 
     def save_image(self):
         file_path = filedialog.asksaveasfilename(filetypes=[('PNG files', '*.png')])
