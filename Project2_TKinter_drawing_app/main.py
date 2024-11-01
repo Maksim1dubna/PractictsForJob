@@ -52,6 +52,9 @@ class DrawingApp:
         self.eraser_button = tk.Button(control_frame, text="Ластик", command=self.eraser)
         self.eraser_button.pack(side=tk.LEFT)
 
+        '''Задача №3. Реализовать функционал: Пипетка для выбора цвета с холста'''
+        self.canvas.bind('<Button-3>', self.pick_color)
+
     def paint(self, event):
         if self.last_x and self.last_y:
             '''Задание 1. width теперь принимает self.variable.get() из brush_size_scale'''
@@ -93,7 +96,14 @@ class DrawingApp:
             self.eraser_button.configure(foreground='black')
         else:
             self.pen_color = "white"
-            self.eraser_button.configure(foreground = 'red')
+            self.eraser_button.configure(foreground='red')
+
+    '''Задача №3. Реализовать функционал: Пипетка для выбора цвета с холста'''
+    def pick_color(self, event):
+        '''Перевод RGB в hex'''
+        self.pen_color = '#%02x%02x%02x' % self.image.getpixel([event.x, event.y])
+        self.eraser_button.configure(foreground='black')
+
 
 def main():
     root = tk.Tk()
