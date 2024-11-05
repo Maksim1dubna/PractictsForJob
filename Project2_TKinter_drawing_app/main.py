@@ -74,19 +74,19 @@ class DrawingApp:
     def reset(self, event):
         self.last_x, self.last_y = None, None
 
-    '''Задача №4. добавлена переменная event=1 (Для возможности запустить события)'''
+    '''Задача №4. добавлена переменная event=0 (Для возможности запустить события)'''
     def clear_canvas(self):
         self.canvas.delete("all")
         self.image = Image.new("RGB", (600, 400), "white")
         self.draw = ImageDraw.Draw(self.image)
 
-    '''Задача №4. добавлена переменная event=1 (Для возможности запустить события)'''
-    def choose_color(self, event=1):
+    '''Задача №4. добавлена переменная event=0 (Для возможности запустить события)'''
+    def choose_color(self, event=0):
         self.pen_color = colorchooser.askcolor(color=self.pen_color)[1]
         self.l_color = self.pen_color
         self.eraser_button.configure(foreground='black')
 
-    def save_image(self, event=1):
+    def save_image(self, event=0):
         file_path = filedialog.asksaveasfilename(filetypes=[('PNG files', '*.png')])
         if file_path:
             if not file_path.endswith('.png'):
