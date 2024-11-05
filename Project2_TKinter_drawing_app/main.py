@@ -10,8 +10,8 @@ class DrawingApp:
 
         self.image = Image.new("RGB", (600, 400), "white")
         self.draw = ImageDraw.Draw(self.image)
-
-        self.canvas = tk.Canvas(root, width=600, height=400, bg='white')
+        self.pen_color = 'black'
+        self.canvas = tk.Canvas(root, width=600, height=400, bg="white")
         self.canvas.pack()
 
         self.setup_ui()
@@ -37,8 +37,6 @@ class DrawingApp:
         save_button = tk.Button(control_frame, text="Сохранить", command=self.save_image)
         save_button.pack(side=tk.LEFT)
 
-        # self.brush_size_scale = tk.Scale(control_frame, from_=1, to=10, orient=tk.HORIZONTAL)
-        # self.brush_size_scale.pack(side=tk.LEFT)
         '''Задача №1. Реализовать функционал: Выбор размера кисти из списка'''
         self.sizes = [1, 2, 5, 10]
         '''Переменная, определенная с помощью IntVar() функции, содержит целочисленные данные, 
@@ -59,6 +57,9 @@ class DrawingApp:
         self.root.bind('<s>', self.save_image)
         self.root.bind('<c>', self.choose_color)
 
+        '''Задача №5. Реализовать функционал: Предварительный просмотр цвета кисти'''
+        self.preview_color_label = tk.Label(self.root, bg=self.pen_color, width=3)
+        self.preview_color_label.pack(side=tk.RIGHT)
     def paint(self, event):
         if self.last_x and self.last_y:
             '''Задание 1. width теперь принимает self.variable.get() из brush_size_scale'''
@@ -85,6 +86,7 @@ class DrawingApp:
         self.pen_color = colorchooser.askcolor(color=self.pen_color)[1]
         self.l_color = self.pen_color
         self.eraser_button.configure(foreground='black')
+        self.preview_color_label.configure(bg=self.pen_color)
 
     def save_image(self, event=0):
         file_path = filedialog.asksaveasfilename(filetypes=[('PNG files', '*.png')])
@@ -100,9 +102,11 @@ class DrawingApp:
         if self.pen_color == "white":
             self.pen_color = self.l_color
             self.eraser_button.configure(foreground='black')
+            self.preview_color_label.configure(bg=self.l_color)
         else:
             self.pen_color = "white"
             self.eraser_button.configure(foreground='red')
+            self.preview_color_label.configure(bg=self.pen_color)
 
     '''Задача №3. Реализовать функционал: Пипетка для выбора цвета с холста'''
     def pick_color(self, event):
