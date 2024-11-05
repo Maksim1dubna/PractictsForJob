@@ -55,6 +55,10 @@ class DrawingApp:
         '''Задача №3. Реализовать функционал: Пипетка для выбора цвета с холста'''
         self.canvas.bind('<Button-3>', self.pick_color)
 
+        '''Задача №4. Реализовать функционал: Горячие клавиши для быстрых действий'''
+        self.root.bind('<s>', self.save_image)
+        self.root.bind('<c>', self.choose_color)
+
     def paint(self, event):
         if self.last_x and self.last_y:
             '''Задание 1. width теперь принимает self.variable.get() из brush_size_scale'''
@@ -70,17 +74,19 @@ class DrawingApp:
     def reset(self, event):
         self.last_x, self.last_y = None, None
 
+    '''Задача №4. добавлена переменная event=1 (Для возможности запустить события)'''
     def clear_canvas(self):
         self.canvas.delete("all")
         self.image = Image.new("RGB", (600, 400), "white")
         self.draw = ImageDraw.Draw(self.image)
 
-    def choose_color(self):
+    '''Задача №4. добавлена переменная event=1 (Для возможности запустить события)'''
+    def choose_color(self, event=1):
         self.pen_color = colorchooser.askcolor(color=self.pen_color)[1]
         self.l_color = self.pen_color
         self.eraser_button.configure(foreground='black')
 
-    def save_image(self):
+    def save_image(self, event=1):
         file_path = filedialog.asksaveasfilename(filetypes=[('PNG files', '*.png')])
         if file_path:
             if not file_path.endswith('.png'):
