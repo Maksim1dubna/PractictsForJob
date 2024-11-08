@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import colorchooser, filedialog, messagebox
+from tkinter import colorchooser, filedialog, messagebox, simpledialog
 from PIL import Image, ImageDraw
 
 
@@ -60,6 +60,11 @@ class DrawingApp:
         '''Задача №5. Реализовать функционал: Предварительный просмотр цвета кисти'''
         self.preview_color_label = tk.Label(self.root, bg=self.pen_color, width=3)
         self.preview_color_label.pack(side=tk.RIGHT)
+
+        '''Задача №6. Реализовать функционал: Изменение размера холста'''
+        self.eraser_button = tk.Button(control_frame, text="Размер холста", command=self.size_canvas)
+        self.eraser_button.pack(side=tk.LEFT)
+
     def paint(self, event):
         if self.last_x and self.last_y:
             '''Задание 1. width теперь принимает self.variable.get() из brush_size_scale'''
@@ -76,12 +81,14 @@ class DrawingApp:
         self.last_x, self.last_y = None, None
 
     '''Задача №4. добавлена переменная event=0 (Для возможности запустить события)'''
+
     def clear_canvas(self):
         self.canvas.delete("all")
         self.image = Image.new("RGB", (600, 400), "white")
         self.draw = ImageDraw.Draw(self.image)
 
     '''Задача №4. добавлена переменная event=0 (Для возможности запустить события)'''
+
     def choose_color(self, event=0):
         self.pen_color = colorchooser.askcolor(color=self.pen_color)[1]
         self.l_color = self.pen_color
@@ -109,10 +116,19 @@ class DrawingApp:
             self.preview_color_label.configure(bg=self.pen_color)
 
     '''Задача №3. Реализовать функционал: Пипетка для выбора цвета с холста'''
+
     def pick_color(self, event):
         '''Перевод RGB в hex'''
         self.pen_color = '#%02x%02x%02x' % self.image.getpixel([event.x, event.y])
         self.eraser_button.configure(foreground='black')
+
+    '''Задача №6. Реализовать функционал: Изменение размера холста'''
+
+    def size_canvas(self):
+        y = tk.simpledialog.askinteger("Размер холста", "Координата Y|", parent=self.root)
+        x = tk.simpledialog.askinteger("Размер холста", "Координата X_", parent=self.root)
+        self.canvas.configure(width=x, height=y)
+        self.root.mainloop()
 
 
 def main():
