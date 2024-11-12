@@ -5,13 +5,16 @@ from PIL import Image, ImageDraw
 
 class DrawingApp:
     def __init__(self, root):
+        self.x = 600
+        self.y = 400
+        self.text = ''
         self.root = root
         self.root.title("Рисовалка с сохранением в PNG")
 
-        self.image = Image.new("RGB", (600, 400), "white")
+        self.image = Image.new("RGB", (self.x, self.y), "white")
         self.draw = ImageDraw.Draw(self.image)
         self.pen_color = 'black'
-        self.canvas = tk.Canvas(root, width=600, height=400, bg="white")
+        self.canvas = tk.Canvas(root, width=self.x, height=self.y, bg="white")
         self.canvas.pack()
 
         self.setup_ui()
@@ -23,6 +26,7 @@ class DrawingApp:
 
         self.canvas.bind('<B1-Motion>', self.paint)
         self.canvas.bind('<ButtonRelease-1>', self.reset)
+        self.canvas.bind("<Button-1>", self.add_text)
 
     def setup_ui(self):
         control_frame = tk.Frame(self.root)
@@ -62,8 +66,15 @@ class DrawingApp:
         self.preview_color_label.pack(side=tk.RIGHT)
 
         '''Задача №6. Реализовать функционал: Изменение размера холста'''
-        self.eraser_button = tk.Button(control_frame, text="Размер холста", command=self.size_canvas)
-        self.eraser_button.pack(side=tk.LEFT)
+        self.size_canvas_button = tk.Button(control_frame, text="Размер холста", command=self.size_canvas)
+        self.size_canvas_button.pack(side=tk.LEFT)
+
+        '''Задача №7. Реализовать функционал: Инструмент "Текст" для добавления текста на изображение'''
+        self.set_text_button = tk.Button(control_frame, text="Текст", command=self.set_text)
+        self.set_text_button.pack(side=tk.LEFT)
+
+        self.background_color_button = tk.Button(control_frame, text="Цвет фона", command=self.background_color)
+        self.background_color_button.pack(side=tk.LEFT)
 
     def paint(self, event):
         if self.last_x and self.last_y:
@@ -125,10 +136,26 @@ class DrawingApp:
     '''Задача №6. Реализовать функционал: Изменение размера холста'''
 
     def size_canvas(self):
-        y = tk.simpledialog.askinteger("Размер холста", "Координата Y|", parent=self.root)
-        x = tk.simpledialog.askinteger("Размер холста", "Координата X_", parent=self.root)
-        self.canvas.configure(width=x, height=y)
+        self.y = tk.simpledialog.askinteger("Размер холста", "Координата Y|", parent=self.root)
+        self.x = tk.simpledialog.askinteger("Размер холста", "Координата X_", parent=self.root)
         self.root.mainloop()
+
+    '''Задача №7. Реализовать функционал: Инструмент "Текст" для добавления текста на изображение'''
+
+    def set_text(self):
+        self.text = tk.simpledialog.askstring("Текст для вставки", "Текст", parent=self.root)
+        self.set_text_button.configure(foreground='red')
+
+    def add_text(self, event):
+        self.draw.text((event.x, event.y), self.text, fill=self.pen_color)
+        self.set_text_button.configure(foreground='black')
+        ts = self.canvas.create_text([event.x, event.y], text=self.text, fill=self.pen_color)
+        self.canvas.itemconfig(ts, text=self.text)
+        self.text = ''
+
+    def background_color(self):
+        new_color = colorchooser.askcolor(color=self.pen_color)[1]
+        self.canvas.config(background=new_color)
 
 
 def main():
