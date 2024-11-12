@@ -1,5 +1,5 @@
 import telebot
-from PIL import Image
+from PIL import Image, ImageOps
 import io
 from telebot import types
 import time
@@ -68,6 +68,8 @@ def pixelate_image(image, pixel_size):
         (image.size[0] * pixel_size, image.size[1] * pixel_size),
         Image.NEAREST
     )
+    '''Задача №2. Инверсия цветов изображения'''
+    image = ImageOps.invert(image)
     return image
 
 
