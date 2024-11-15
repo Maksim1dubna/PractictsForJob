@@ -68,9 +68,9 @@ def pixelate_image(image, pixel_size, flip=False):
         (image.size[0] * pixel_size, image.size[1] * pixel_size),
         Image.NEAREST
     )
-    '''Задача №3. Отражение изображения'''
+    '''Задача №2. Инверсия цветов изображения'''
     image = ImageOps.invert(image)
-
+    '''Задача №3. Отражение изображения'''
     if flip == True:
         return mirror_image(image, flip_site='t_b')
     return image
