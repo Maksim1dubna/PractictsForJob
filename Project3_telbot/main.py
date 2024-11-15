@@ -59,7 +59,7 @@ def pixels_to_ascii(image):
 
 
 # Огрубляем изображение
-def pixelate_image(image, pixel_size):
+def pixelate_image(image, pixel_size, flip=False):
     image = image.resize(
         (image.size[0] // pixel_size, image.size[1] // pixel_size),
         Image.NEAREST
@@ -68,8 +68,20 @@ def pixelate_image(image, pixel_size):
         (image.size[0] * pixel_size, image.size[1] * pixel_size),
         Image.NEAREST
     )
-    '''Задача №2. Инверсия цветов изображения'''
+    '''Задача №3. Отражение изображения'''
     image = ImageOps.invert(image)
+
+    if flip == True:
+        return mirror_image(image, flip_site='t_b')
+    return image
+
+
+def mirror_image(image, flip_site='l_r'):
+    '''Задача №3. Отражение изображения'''
+    if flip_site == 'l_r':
+        image = image.transpose(Image.FLIP_LEFT_RIGHT)
+    elif flip_site == 't_b':
+        image = image.transpose(Image.FLIP_TOP_BOTTOM)
     return image
 
 
@@ -98,7 +110,10 @@ def callback_query(call):
     global ASCII_CHARS
     if call.data == "pixelate":
         bot.answer_callback_query(call.id, "Pixelating your image...")
+        '''Задача №3. Отражение изображения + без отражения'''
         pixelate_and_send(call.message)
+        pixelate_and_send(call.message, flip=True)
+
     elif call.data == "ascii":
         sent = bot.send_message(call.message.chat.id, "Print your ASCII :")
         bot.register_next_step_handler(sent, ascii_set)
@@ -107,20 +122,24 @@ def callback_query(call):
         bot.answer_callback_query(call.id, "Converting your image to ASCII art...")
         ascii_and_send(call.message)
         ASCII_CHARS = ''
+
+
 '''Задача №1. Изменение набора символов для ASCII арта из изображений'''
+
+
 def ascii_set(message):
     global ASCII_CHARS
     ASCII_CHARS = message.text
 
 
-def pixelate_and_send(message):
+def pixelate_and_send(message, flip=False):
     photo_id = user_states[message.chat.id]['photo']
     file_info = bot.get_file(photo_id)
     downloaded_file = bot.download_file(file_info.file_path)
 
     image_stream = io.BytesIO(downloaded_file)
     image = Image.open(image_stream)
-    pixelated = pixelate_image(image, 20)
+    pixelated = pixelate_image(image, 20, flip)
 
     output_stream = io.BytesIO()
     pixelated.save(output_stream, format="JPEG")
