@@ -59,7 +59,7 @@ def pixels_to_ascii(image):
 
 
 # Огрубляем изображение
-def pixelate_image(image, pixel_size, flip=False):
+def pixelate_image(image, pixel_size, flip=False, heatmap=False):
     image = image.resize(
         (image.size[0] // pixel_size, image.size[1] // pixel_size),
         Image.NEAREST
@@ -73,6 +73,8 @@ def pixelate_image(image, pixel_size, flip=False):
     '''Задача №3. Отражение изображения'''
     if flip == True:
         return mirror_image(image, flip_site='t_b')
+    if heatmap == True:
+        return convert_to_heatmap(image)
     return image
 
 
@@ -82,6 +84,13 @@ def mirror_image(image, flip_site='l_r'):
         image = image.transpose(Image.FLIP_LEFT_RIGHT)
     elif flip_site == 't_b':
         image = image.transpose(Image.FLIP_TOP_BOTTOM)
+    return image
+
+
+def convert_to_heatmap(image):
+    '''Задача №4. Преобразование изображения в тепловую карту'''
+    image = image.convert("L")
+    image = ImageOps.colorize(image, black='red', white='blue')
     return image
 
 
@@ -113,7 +122,8 @@ def callback_query(call):
         '''Задача №3. Отражение изображения + без отражения'''
         pixelate_and_send(call.message)
         pixelate_and_send(call.message, flip=True)
-
+        '''Задача №4. Преобразование изображения в тепловую карту'''
+        pixelate_and_send(call.message, heatmap=True)
     elif call.data == "ascii":
         sent = bot.send_message(call.message.chat.id, "Print your ASCII :")
         bot.register_next_step_handler(sent, ascii_set)
@@ -132,14 +142,14 @@ def ascii_set(message):
     ASCII_CHARS = message.text
 
 
-def pixelate_and_send(message, flip=False):
+def pixelate_and_send(message, flip=False, heatmap=False):
     photo_id = user_states[message.chat.id]['photo']
     file_info = bot.get_file(photo_id)
     downloaded_file = bot.download_file(file_info.file_path)
 
     image_stream = io.BytesIO(downloaded_file)
     image = Image.open(image_stream)
-    pixelated = pixelate_image(image, 20, flip)
+    pixelated = pixelate_image(image, 20, flip, heatmap)
 
     output_stream = io.BytesIO()
     pixelated.save(output_stream, format="JPEG")
