@@ -4,7 +4,7 @@ import io
 from telebot import types
 import time
 
-TOKEN = '7793971763:AAF5p7Du1npDIvRgd8_q-eOBSQap9dGT2jE'
+TOKEN = '0000'
 bot = telebot.TeleBot(TOKEN)
 
 user_states = {}  # тут будем хранить информацию о действиях пользователя
