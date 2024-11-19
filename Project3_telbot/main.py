@@ -59,7 +59,7 @@ def pixels_to_ascii(image):
 
 
 # Огрубляем изображение
-def pixelate_image(image, pixel_size, flip=False, heatmap=False):
+def pixelate_image(image, pixel_size, flip=False, heatmap=False, resize=False):
     image = image.resize(
         (image.size[0] // pixel_size, image.size[1] // pixel_size),
         Image.NEAREST
@@ -72,9 +72,11 @@ def pixelate_image(image, pixel_size, flip=False, heatmap=False):
     image = ImageOps.invert(image)
     '''Задача №3. Отражение изображения'''
     if flip == True:
-        return mirror_image(image, flip_site='t_b')
+        image = mirror_image(image, flip_site='t_b')
     if heatmap == True:
-        return convert_to_heatmap(image)
+        image = convert_to_heatmap(image)
+    if resize == True:
+        image = resize_for_sticker(image)
     return image
 
 
@@ -91,6 +93,16 @@ def convert_to_heatmap(image):
     '''Задача №4. Преобразование изображения в тепловую карту'''
     image = image.convert("L")
     image = ImageOps.colorize(image, black='red', white='blue')
+    return image
+
+
+def resize_for_sticker(image):
+    '''Задача №5. Изменение размера изображения для стикера'''
+    mywidth = 128
+
+    wpercent = (mywidth / float(image.size[0]))
+    hsize = int((float(image.size[1]) * float(wpercent)))
+    image = image.resize((mywidth, hsize), Image.Resampling.LANCZOS) # LANCZOS Для лучшего качества при изменении размера
     return image
 
 
@@ -120,7 +132,7 @@ def callback_query(call):
     if call.data == "pixelate":
         bot.answer_callback_query(call.id, "Pixelating your image...")
         '''Задача №3. Отражение изображения + без отражения'''
-        pixelate_and_send(call.message)
+        pixelate_and_send(call.message, resize=True)
         pixelate_and_send(call.message, flip=True)
         '''Задача №4. Преобразование изображения в тепловую карту'''
         pixelate_and_send(call.message, heatmap=True)
@@ -142,14 +154,14 @@ def ascii_set(message):
     ASCII_CHARS = message.text
 
 
-def pixelate_and_send(message, flip=False, heatmap=False):
+def pixelate_and_send(message, flip=False, heatmap=False, resize=False):
     photo_id = user_states[message.chat.id]['photo']
     file_info = bot.get_file(photo_id)
     downloaded_file = bot.download_file(file_info.file_path)
 
     image_stream = io.BytesIO(downloaded_file)
     image = Image.open(image_stream)
-    pixelated = pixelate_image(image, 20, flip, heatmap)
+    pixelated = pixelate_image(image, 20, flip, heatmap, resize)
 
     output_stream = io.BytesIO()
     pixelated.save(output_stream, format="JPEG")
