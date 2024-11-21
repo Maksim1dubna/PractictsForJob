@@ -103,7 +103,8 @@ def resize_for_sticker(image):
 
     wpercent = (mywidth / float(image.size[0]))
     hsize = int((float(image.size[1]) * float(wpercent)))
-    image = image.resize((mywidth, hsize), Image.Resampling.LANCZOS) # LANCZOS Для лучшего качества при изменении размера
+    image = image.resize((mywidth, hsize),
+                         Image.Resampling.LANCZOS)  # LANCZOS Для лучшего качества при изменении размера
     return image
 
 
@@ -111,46 +112,46 @@ def resize_for_sticker(image):
 def send_welcome(message):
     bot.reply_to(message, "Send me an image, and I'll provide options for you!")
 
+
 @bot.message_handler(content_types=['text'])
 def send_joke(message):
     '''Задача №6. Случайная шутка'''
     if message.text == 'Random joke' or 'random joke':
-        i = random.randint(1, 3)
-        match i:
-            case 1:
-                bot.reply_to(message, f"Еще не придумал...")
-            case 2:
-                bot.reply_to(message, f"— Это я, добрый Э-эх, я здесь.\n"
-                                      f"— И я здесь!\n"
-                                      f"— А ты кто такой, откуда взялся?\n"
-                                      f"— С того берега моря.\n"
-                                      f"— На чём приехал?\n"
-                                      f"— Оседлал хромую блоху, сел и приехал.\n"
-                                      f"— Море что, лужа?\n"
-                                      f"— Может, и лужа, да только ту лужу орёл не перелетел.\n"
-                                      f"— Значит, орёл — птенец?\n"
-                                      f"— Наверное, птенец, но тень от его крыльев город закрывает, в городе ночь настаёт.\n"
-                                      f"— Город, небось, крохотный?\n"
-                                      f"— Через тот город заяц бежал, не перебежал.\n"
-                                      f"— Выходит, заяц маленький?\n"
-                                      f"— Заяц как заяц, из его шкуры тулуп вышел.\n"
-                                      f"— Куда вышел?\n"
-                                      f"— Вышел из того города, где заяц бежал, на который тень от орла упала, и пошёл куда глаза глядят.\n"
-                                      f"— Чьи глаза?\n"
-                                      f"— Глаза того тулупа, который из шкуры зайца вышел, в городе, где ночь настаёт, когда над ним птенец пролетает верхом на хромой блохе.\n"
-                                      f"— Чего?!\n"
-                                      f"— Чего, чего… На хромой блохе с того берега моря, которое зайцу не перелететь, орлу не перебежать, хоть море не море, а так, лужа посреди города, где тень от блохи на зайца упала и насмерть убила, а из шкуры зайца тулуп вышел и пошёл, куда глаза глядят, а тут заяц ка-ак прыгнет!..\n"
-                                      f"— Какой заяц?!\n"
-                                      f"— Насмерть убитый, как прыгнет куда глаза глядят — аж на тот берег моря, которое ни перелететь, ни перебежать, из которого тулуп вышел, на который тень от блохи упала и зайца убила, хоть заяц — не заяц, а орёл…\n")
-            case 3:
-                bot.reply_to(message, f"In Soviet Russia a Man Goes to Buy a Car...\n\n"
-                                      f"He goes up to the owner and asks for a car, to which the owner responds:\n"
-                                      f"- You know there is a 10 year waiting list?\n"
-                                      f"The man then answers, 'OK,' and after some time he then agreed to buy a car.\n"
-                                      f"So he pays for the car in advance, and just before he leaves he asks the owner,\n"
-                                      f"- Can I pick the car up in the morning or afternoon?\n"
-                                      f"- It's 10 years away, what does it matter?\n"
-                                      f"- The plumber is coming in the morning.\n")
+        JOKES = [f"Еще не придумал...",
+                 f"— Это я, добрый Э-эх, я здесь.\n"
+                 f"— И я здесь!\n"
+                 f"— А ты кто такой, откуда взялся?\n"
+                 f"— С того берега моря.\n"
+                 f"— На чём приехал?\n"
+                 f"— Оседлал хромую блоху, сел и приехал.\n"
+                 f"— Море что, лужа?\n"
+                 f"— Может, и лужа, да только ту лужу орёл не перелетел.\n"
+                 f"— Значит, орёл — птенец?\n"
+                 f"— Наверное, птенец, но тень от его крыльев город закрывает, в городе ночь настаёт.\n"
+                 f"— Город, небось, крохотный?\n"
+                 f"— Через тот город заяц бежал, не перебежал.\n"
+                 f"— Выходит, заяц маленький?\n"
+                 f"— Заяц как заяц, из его шкуры тулуп вышел.\n"
+                 f"— Куда вышел?\n"
+                 f"— Вышел из того города, где заяц бежал, на который тень от орла упала, и пошёл куда глаза глядят.\n"
+                 f"— Чьи глаза?\n"
+                 f"— Глаза того тулупа, который из шкуры зайца вышел, в городе, где ночь настаёт, когда над ним птенец пролетает верхом на хромой блохе.\n"
+                 f"— Чего?!\n"
+                 f"— Чего, чего… На хромой блохе с того берега моря, которое зайцу не перелететь, орлу не перебежать, хоть море не море, а так, лужа посреди города, где тень от блохи на зайца упала и насмерть убила, а из шкуры зайца тулуп вышел и пошёл, куда глаза глядят, а тут заяц ка-ак прыгнет!..\n"
+                 f"— Какой заяц?!\n"
+                 f"— Насмерть убитый, как прыгнет куда глаза глядят — аж на тот берег моря, которое ни перелететь, ни перебежать, из которого тулуп вышел, на который тень от блохи упала и зайца убила, хоть заяц — не заяц, а орёл…\n",
+                 f"In Soviet Russia a Man Goes to Buy a Car...\n\n"
+                 f"He goes up to the owner and asks for a car, to which the owner responds:\n"
+                 f"- You know there is a 10 year waiting list?\n"
+                 f"The man then answers, 'OK,' and after some time he then agreed to buy a car.\n"
+                 f"So he pays for the car in advance, and just before he leaves he asks the owner,\n"
+                 f"- Can I pick the car up in the morning or afternoon?\n"
+                 f"- It's 10 years away, what does it matter?\n"
+                 f"- The plumber is coming in the morning.\n"]
+        i = random.choice(JOKES)
+        bot.reply_to(message, i)
+
+
 @bot.message_handler(content_types=['photo'])
 def handle_photo(message):
     bot.reply_to(message, "I got your photo! Please choose what you'd like to do with it.",
