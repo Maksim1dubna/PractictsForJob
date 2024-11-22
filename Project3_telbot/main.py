@@ -151,7 +151,7 @@ def send_random_message(message):
                  f"- The plumber is coming in the morning.\n"]
         i = random.choice(JOKES)
         bot.reply_to(message, i)
-    if message.text == 'Random Compliment' or 'random compliment':
+    elif message.text == 'Random Compliment' or 'random compliment':
         COMPLIMENTS = ["Классные картинки", "Просто замечательно...", "Восхитительно..."]
         i = random.choice(COMPLIMENTS)
         bot.reply_to(message, i)
