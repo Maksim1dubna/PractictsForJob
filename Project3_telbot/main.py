@@ -114,8 +114,9 @@ def send_welcome(message):
 
 
 @bot.message_handler(content_types=['text'])
-def send_joke(message):
+def send_random_message(message):
     '''Задача №6. Случайная шутка'''
+    '''Задача №7. Случайный комплимент'''
     if message.text == 'Random joke' or 'random joke':
         JOKES = [f"Еще не придумал...",
                  f"— Это я, добрый Э-эх, я здесь.\n"
@@ -150,7 +151,10 @@ def send_joke(message):
                  f"- The plumber is coming in the morning.\n"]
         i = random.choice(JOKES)
         bot.reply_to(message, i)
-
+    if message.text == 'Random Compliment' or 'random compliment':
+        COMPLIMENTS = ["Классные картинки", "Просто замечательно...", "Восхитительно..."]
+        i = random.choice(COMPLIMENTS)
+        bot.reply_to(message, i)
 
 @bot.message_handler(content_types=['photo'])
 def handle_photo(message):
