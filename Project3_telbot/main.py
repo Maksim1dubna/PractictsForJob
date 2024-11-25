@@ -155,6 +155,11 @@ def send_random_message(message):
         COMPLIMENTS = ["Классные картинки", "Просто замечательно...", "Восхитительно..."]
         i = random.choice(COMPLIMENTS)
         bot.reply_to(message, i)
+    elif message.text == 'Flip a Coin' or 'flip a coin':
+        COIN = ["Head", "Tails"]
+        i = random.choice(COIN)
+        bot.reply_to(message, i)
+
 
 @bot.message_handler(content_types=['photo'])
 def handle_photo(message):
