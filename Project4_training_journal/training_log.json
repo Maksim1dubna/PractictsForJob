@@ -1,14 +1,38 @@
 [
-  {
-    "date": "2024-11-10 12:49:38",
-    "exercise": "exercise5",
-    "weight": 5,
-    "repetitions": 10
-  },
-  {
-    "date": "2024-11-26 12:50:35",
-    "exercise": "exercise100",
-    "weight": 100,
-    "repetitions": 50
-  }
+    {
+        "date": "2024-11-10 12:49:38",
+        "exercise": "exercise1",
+        "weight": 5,
+        "repetitions": 5
+    },
+    {
+        "date": "2024-11-23 12:50:35",
+        "exercise": "exercise1",
+        "weight": 20,
+        "repetitions": 14
+    },
+    {
+        "date": "2024-11-24 12:50:35",
+        "exercise": "exercise1",
+        "weight": 15,
+        "repetitions": 21
+    },
+    {
+        "date": "2024-11-25 12:50:35",
+        "exercise": "exercise2",
+        "weight": 70,
+        "repetitions": 40
+    },
+    {
+        "date": "2024-11-10 12:50:35",
+        "exercise": "exercise2",
+        "weight": 40,
+        "repetitions": 49
+    },
+    {
+        "date": "2024-11-27 12:50:35",
+        "exercise": "exercise2",
+        "weight": 34,
+        "repetitions": 50
+    }
 ]
