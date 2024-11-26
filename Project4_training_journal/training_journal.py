@@ -1,6 +1,7 @@
+import csv
+import json
 import tkinter as tk
 from tkinter import ttk, Toplevel, messagebox
-import json
 from datetime import datetime
 import pandas as pd
 
@@ -83,25 +84,50 @@ class TrainingLogApp:
         data = load_data()
         records_window = Toplevel(self.root)
         records_window.title("Записи тренировок")
+        records_window.minsize(800, 200)
 
         tree = ttk.Treeview(records_window, columns=("Дата", "Упражнение", "Вес", "Повторения"), show="headings")
         tree.heading('Дата', text="Дата")
         tree.heading('Упражнение', text="Упражнение")
         tree.heading('Вес', text="Вес")
         tree.heading('Повторения', text="Повторения")
-
-        for entry in data:
-            tree.insert('', tk.END, values=(entry['date'], entry['exercise'], entry['weight'], entry['repetitions']))
-        tree.pack(expand=True, fill=tk.BOTH)
+        def update_records():
+            for row in tree.get_children():
+                tree.delete(row)
+            data = load_data()
+            for entry in data:
+                tree.insert('', tk.END, values=(entry['date'], entry['exercise'], entry['weight'], entry['repetitions']))
+            tree.pack(expand=True, fill=tk.BOTH)
+            records_window.update()
+        update_records()
 
         def btnExportCSV():
             '''3. Экспорт данных в CSV - функция для экспорта всех записей в CSV файл.'''
             with open('training_log.json', encoding='utf-8') as inputfile:
                 df = pd.read_json(inputfile)
             df.to_csv('training_log.csv', encoding='utf-8', index=False)
+        def btnImportCSV():
+            '''4. Импорт данных из CSV - функция для импорта записей из CSV файла.'''
+            filepath = "training_log.csv"
+            output_path = "training_log.json"
+
+            df = pd.read_csv(filepath)
+
+            # Create a multiline json
+            record_dict = json.loads(df.to_json(orient="records"))
+            record_json = json.dumps(record_dict, indent=2)
+
+            with open(output_path, 'w') as f:
+                f.write(record_json)
+            update_records()
+
 
         btnExportCSV = ttk.Button(tree, text="Экспортировать в CSV", command = btnExportCSV)
-        btnExportCSV.pack(side=tk.LEFT)
+        btnImportCSV = ttk.Button(tree, text="Импортировать из CSV", command = btnImportCSV)
+        btnExportCSV.pack(anchor = "w", side = "bottom")
+        btnImportCSV.pack(anchor = "w", side = "bottom")
+
+
 def main():
     root = tk.Tk()
     app = TrainingLogApp(root)
