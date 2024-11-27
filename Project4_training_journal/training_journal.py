@@ -6,7 +6,7 @@ from datetime import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Файл для сохранения данных
+'''Файл для сохранения данных'''
 data_file = 'training_log.json'
 
 
