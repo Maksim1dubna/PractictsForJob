@@ -35,14 +35,20 @@ def advertisement_list(request):
     advertisements = Advertisement.objects.all()
     return render(request, 'board/advertisement_list.html', {'advertisements': advertisements})
 
+
 def advertisement_detail(request, pk):
     advertisement = Advertisement.objects.get(pk=pk)
     return render(request, 'board/advertisement_detail.html', {'advertisement': advertisement})
 
+
 def advertisement_list_to_edit(request):
+    '''Задача №1. Реализовать функционал: Правка объявлений'''
     advertisements = Advertisement.objects.all()
     return render(request, 'board/advertisement_list_to_edit.html', {'advertisements': advertisements})
+
+
 def advertisement_detail_edit(request, pk):
+    '''Задача №1. Реализовать функционал: Правка объявлений'''
     advertisement = Advertisement.objects.get(pk=pk)
     if request.method == "POST":
         form = AdvertisementForm(request.POST)
@@ -58,6 +64,21 @@ def advertisement_detail_edit(request, pk):
         form.fields['content'].initial = advertisement.content
         form.fields['author'].initial = advertisement.author
     return render(request, 'board/advertisement_detail_edit.html', {'form': form})
+
+
+def advertisement_list_to_delete(request):
+    '''Задача №2. Реализовать функционал: Удаление объявлений'''
+    advertisements = Advertisement.objects.all()
+    return render(request, 'board/advertisement_list_to_delete.html', {'advertisements': advertisements})
+
+
+def advertisement_detail_delete(request, pk):
+    '''Задача №2. Реализовать функционал: Удаление объявлений'''
+    advertisement = Advertisement.objects.get(pk=pk)
+    if request.method == "POST":
+        advertisement.delete()
+        return redirect('board:advertisement_list_to_delete')
+    return render(request, 'board/advertisement_detail_delete.html', {'advertisement': advertisement})
 
 
 @login_required

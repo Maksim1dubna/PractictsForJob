@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Advertisements to Delete</h1>
+<ul>
+  {% for advertisement in advertisements %}
+    <li>
+      <a href="{% url 'board:advertisement_detail_delete' pk=advertisement.pk %}">{{ advertisement.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

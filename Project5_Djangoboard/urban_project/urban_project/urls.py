@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('board/', include('board.urls', namespace='board')),
     path('board/edit', include('board.urls', namespace='board/edit')),
+    path('board/delete', include('board.urls', namespace='board/delete')),
     path('accounts/logout/', board_views.logout_view, name='logout'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', board_views.home, name='home'),
