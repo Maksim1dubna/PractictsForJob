@@ -51,11 +51,12 @@ def advertisement_detail_edit(request, pk):
     '''Задача №1. Реализовать функционал: Правка объявлений'''
     advertisement = Advertisement.objects.get(pk=pk)
     if request.method == "POST":
-        form = AdvertisementForm(request.POST)
+        form = AdvertisementForm(request.POST, request.FILES)
         if form.is_valid():
             advertisement.title = form.cleaned_data['title']
             advertisement.content = form.cleaned_data['content']
             advertisement.author = form.cleaned_data['author']
+            advertisement.picture = form.files['picture']
             advertisement.save()
             return redirect('board:advertisement_list_to_edit')
     else:
@@ -84,10 +85,11 @@ def advertisement_detail_delete(request, pk):
 @login_required
 def add_advertisement(request):
     if request.method == "POST":
-        form = AdvertisementForm(request.POST)
+        form = AdvertisementForm(request.POST, request.FILES)
         if form.is_valid():
             advertisement = form.save(commit=False)
             advertisement.author = request.user
+            advertisement.picture = form.files['picture']
             advertisement.save()
             return redirect('board:advertisement_list')
     else:

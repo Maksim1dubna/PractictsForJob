@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf.urls.static import static
+from django.conf import settings
 from . import views
 
 app_name = 'board'
@@ -11,4 +13,4 @@ urlpatterns = [
     path('delete/advertisement/<int:pk>/', views.advertisement_detail_delete, name='advertisement_detail_delete'),
     path('advertisement/<int:pk>/', views.advertisement_detail, name='advertisement_detail'),
     path('add/', views.add_advertisement, name='add_advertisement'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
