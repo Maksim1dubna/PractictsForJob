@@ -3,6 +3,7 @@
 {% block content %}
 <h1>{{ advertisement.title }}</h1>
 <p>{{ advertisement.content }}</p>
+<p>{{ advertisement.author.username }}</p>
 {% if advertisement.picture %}
     <img src="{{advertisement.picture.url}}">
 {% endif %}
