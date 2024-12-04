@@ -5,6 +5,19 @@
 <p>{{ advertisement.content }}</p>
 <p>{{ advertisement.author.username }}</p>
 {% if advertisement.picture %}
-    <img src="{{advertisement.picture.url}}">
+<img src="{{advertisement.picture.url}}">
 {% endif %}
+<br>
+<hr>
+<br/>
+<form action="{% url 'board:like_advert' advertisement.pk %}" method="post">
+    {% csrf_token %}
+    <button type="submit" name="advertisement_id" value="{{ advertisement.id }}">Like
+    </button> - {{ total_likes }} Likes
+</form>
+<form action="{% url 'board:dislike_advert' advertisement.pk %}" method="post">
+    {% csrf_token %}
+    <button type="submit" name="advertisement_id" value="{{ advertisement.id }}">Dislike
+    </button> - {{ total_dislikes }} Dislikes
+</form>
 {% endblock %}

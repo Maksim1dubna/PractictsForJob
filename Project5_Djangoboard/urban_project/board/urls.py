@@ -13,4 +13,6 @@ urlpatterns = [
     path('delete/advertisement/<int:pk>/', views.advertisement_detail_delete, name='advertisement_detail_delete'),
     path('advertisement/<int:pk>/', views.advertisement_detail, name='advertisement_detail'),
     path('add/', views.add_advertisement, name='add_advertisement'),
+    path('like/<int:pk>/', views.LikeAdvert, name='like_advert'),
+    path('dislike/<int:pk>/', views.DislikeAdvert, name='dislike_advert')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

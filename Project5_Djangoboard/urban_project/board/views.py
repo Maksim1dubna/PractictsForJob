@@ -3,6 +3,8 @@ from board.models import Advertisement
 from board.forms import AdvertisementForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 def logout_view(request):
@@ -10,7 +12,7 @@ def logout_view(request):
     return redirect('home')
 
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import SignUpForm
 from django.contrib.auth import login, authenticate
 
@@ -38,7 +40,10 @@ def advertisement_list(request):
 
 def advertisement_detail(request, pk):
     advertisement = Advertisement.objects.get(pk=pk)
-    return render(request, 'board/advertisement_detail.html', {'advertisement': advertisement})
+    total_likes = get_object_or_404(Advertisement, id=advertisement.pk).total_likes()
+    total_dislikes = get_object_or_404(Advertisement, id=advertisement.pk).total_dislikes()
+    return render(request, 'board/advertisement_detail.html',
+                  {'advertisement': advertisement, 'total_likes': total_likes, 'total_dislikes': total_dislikes})
 
 
 def advertisement_list_to_edit(request):
@@ -80,6 +85,18 @@ def advertisement_detail_delete(request, pk):
         advertisement.delete()
         return redirect('board:advertisement_list_to_delete')
     return render(request, 'board/advertisement_detail_delete.html', {'advertisement': advertisement})
+
+
+def LikeAdvert(request, pk):
+    advertisements = get_object_or_404(Advertisement, id=request.POST.get('advertisement_id'))
+    advertisements.likes.add(request.user)
+    return HttpResponseRedirect(reverse('board:advertisement_detail', args=[str(pk)]))
+
+
+def DislikeAdvert(request, pk):
+    advertisements = get_object_or_404(Advertisement, id=request.POST.get('advertisement_id'))
+    advertisements.dislikes.add(request.user)
+    return HttpResponseRedirect(reverse('board:advertisement_detail', args=[str(pk)]))
 
 
 @login_required
