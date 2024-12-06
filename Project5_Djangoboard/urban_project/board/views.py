@@ -40,6 +40,7 @@ def advertisement_list(request):
 
 def advertisement_detail(request, pk):
     advertisement = Advertisement.objects.get(pk=pk)
+    '''Задача №5-6. Добавление лайков и дизлайков к объявлениям'''
     total_likes = get_object_or_404(Advertisement, id=advertisement.pk).total_likes()
     total_dislikes = get_object_or_404(Advertisement, id=advertisement.pk).total_dislikes()
     return render(request, 'board/advertisement_detail.html',
@@ -87,13 +88,13 @@ def advertisement_detail_delete(request, pk):
     return render(request, 'board/advertisement_detail_delete.html', {'advertisement': advertisement})
 
 
-def LikeAdvert(request, pk):
+def like_advert(request, pk):
     advertisements = get_object_or_404(Advertisement, id=request.POST.get('advertisement_id'))
     advertisements.likes.add(request.user)
     return HttpResponseRedirect(reverse('board:advertisement_detail', args=[str(pk)]))
 
 
-def DislikeAdvert(request, pk):
+def dislike_advert(request, pk):
     advertisements = get_object_or_404(Advertisement, id=request.POST.get('advertisement_id'))
     advertisements.dislikes.add(request.user)
     return HttpResponseRedirect(reverse('board:advertisement_detail', args=[str(pk)]))

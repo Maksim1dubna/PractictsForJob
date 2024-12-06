@@ -7,6 +7,7 @@ class Advertisement(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     picture = models.ImageField(upload_to='img', null=True, default=DEFAULT)
+    '''Задача №5-6. Добавление лайков и дизлайков к объявлениям'''
     likes = models.ManyToManyField(User, related_name='Advertisement.post+')
     dislikes = models.ManyToManyField(User, related_name='Advertisement.post+')
     def total_likes(self):
