@@ -35,7 +35,8 @@ def home(request):
 
 def advertisement_list(request):
     advertisements = Advertisement.objects.all()
-    return render(request, 'board/advertisement_list.html', {'advertisements': advertisements})
+    total_posts = Advertisement.total_posts(Advertisement)
+    return render(request, 'board/advertisement_list.html', {'advertisements': advertisements, 'total_posts': total_posts})
 
 
 def advertisement_detail(request, pk):
