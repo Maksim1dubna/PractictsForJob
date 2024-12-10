@@ -3,15 +3,29 @@
 {% block content %}
 <h1>Advertisements</h1>
 {% if user.is_authenticated %}
-    <a href="{% url 'board:add_advertisement' %}"><button>Add Advertisement</button></a>
+<a href="{% url 'board:add_advertisement' %}">
+    <button>Add Advertisement</button>
+</a>
 {% endif %}
 <ul>
-  {% for advertisement in advertisements %}
+    {% for advertisement in adverts %}
     <li>
-      <a href="{% url 'board:advertisement_detail' pk=advertisement.pk %}">{{ advertisement.title }}</a>
+        <a href="{% url 'board:advertisement_detail' pk=advertisement.pk %}">{{ advertisement.title }}</a>
     </li>
-  {% endfor %}
+    {% endfor %}
 </ul>
+<hr>
+{% if adverts.has_previous %}
+    <a href="?page=1">&laquo First</a>
+    <a href="?page={{ adverts.previous_page_number }}"><-</a>
+{% endif %}
+    Page {{ adverts.number }} of {{ adverts.paginator.num_pages }}
+{% if adverts.has_next %}
+    <a href="?page={{ adverts.next_page_number }}">-></a>
+    <a href="?page={{ adverts.paginator.num_pages }}">Last Page &raquo</a>
+{% endif %}
+<br/><br/>
+<hr>
 {{ total_posts }} - Total posts
 
 {% endblock %}

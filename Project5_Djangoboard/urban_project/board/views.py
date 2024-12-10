@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 
 def logout_view(request):
@@ -35,8 +36,13 @@ def home(request):
 
 def advertisement_list(request):
     advertisements = Advertisement.objects.all()
+    '''Задача №8. Добавление пагинации (ограничения количества объявлений на странице)'''
+    p = Paginator(advertisements, 4)
+    page = request.GET.get('page')
+    adverts = p.get_page(page)
     total_posts = Advertisement.total_posts(Advertisement)
-    return render(request, 'board/advertisement_list.html', {'advertisements': advertisements, 'total_posts': total_posts})
+    return render(request, 'board/advertisement_list.html',
+                  {'advertisements': advertisements, 'total_posts': total_posts, "adverts": adverts})
 
 
 def advertisement_detail(request, pk):
