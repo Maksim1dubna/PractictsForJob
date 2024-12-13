@@ -44,6 +44,12 @@ class TowerDefenseGame:
                 elif event.key == pygame.K_2:
                     self.selected_tower_type = 'sniper'
                     print("Selected sniper tower.")
+                    '''Задача №1. Убрать постоянное отображение позиций'''
+                if event.key == pygame.K_SPACE:
+                    print(1)
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_SPACE:
+                        print(2)
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if self.selected_tower_type:
                     mouse_pos = pygame.mouse.get_pos()
@@ -76,7 +82,9 @@ class TowerDefenseGame:
         else:
             self.screen.blit(self.background, (0, 0))
             self.level.draw(self.screen)
-            self.grid.draw()
+            self.level.draw_path(self.screen)
+            '''Задача №1. Убрать постоянное отображение позиций'''
+            # self.grid.draw()
 
             money_text = self.font.render(f"Money: ${self.settings.starting_money}", True, (255, 255, 255))
             tower_text = self.font.render(

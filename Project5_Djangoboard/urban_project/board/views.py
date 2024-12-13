@@ -68,7 +68,9 @@ def advertisement_detail_edit(request, pk):
         if form.is_valid():
             advertisement.title = form.cleaned_data['title']
             advertisement.content = form.cleaned_data['content']
+            '''Задача №4. Добавление имени автора к объявлению'''
             advertisement.author = form.cleaned_data['author']
+            '''Задача №3. Реализовать функционал: Добавление изображений к объявлениям'''
             advertisement.picture = form.files['picture']
             advertisement.save()
             return redirect('board:advertisement_list_to_edit')
