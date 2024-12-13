@@ -10,6 +10,8 @@ class Advertisement(models.Model):
     '''Задача №5-6. Добавление лайков и дизлайков к объявлениям'''
     likes = models.ManyToManyField(User, related_name='Advertisement.post+')
     dislikes = models.ManyToManyField(User, related_name='Advertisement.post+')
+    def total_posts(self):
+        return self.objects.count()
     def total_likes(self):
         return self.likes.count()
     def total_dislikes(self):
