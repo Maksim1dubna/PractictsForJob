@@ -37,19 +37,21 @@ class Level:
             self.enemies.add(new_enemy)
             self.spawned_enemies += 1
 
-    def attempt_place_tower(self, mouse_pos, tower_type):
-        tower_classes = {'basic': BasicTower, 'sniper': SniperTower}
-        if tower_type in tower_classes and self.game.settings.starting_money >= self.game.settings.tower_cost:
-            grid_pos = self.game.grid.get_grid_position(mouse_pos)
-            if self.game.grid.is_spot_available(grid_pos):
-                self.game.settings.starting_money -= self.game.settings.tower_cost
-                new_tower = tower_classes[tower_type](grid_pos, self.game)
-                self.towers.add(new_tower)
-                print("Tower placed.")
+    def attempt_place_tower(self, mouse_pos, tower_type, placing_tower = False):
+        '''Задача №1. Убрать постоянное отображение позиций'''
+        if placing_tower == True:
+            tower_classes = {'basic': BasicTower, 'sniper': SniperTower}
+            if tower_type in tower_classes and self.game.settings.starting_money >= self.game.settings.tower_cost:
+                grid_pos = self.game.grid.get_grid_position(mouse_pos)
+                if self.game.grid.is_spot_available(grid_pos):
+                    self.game.settings.starting_money -= self.game.settings.tower_cost
+                    new_tower = tower_classes[tower_type](grid_pos, self.game)
+                    self.towers.add(new_tower)
+                    print("Tower placed.")
+                else:
+                    print("Invalid position for tower.")
             else:
-                print("Invalid position for tower.")
-        else:
-            print("Not enough money or unknown tower type.")
+                print("Not enough money or unknown tower type.")
 
     def update(self):
         current_time = pygame.time.get_ticks()
@@ -79,11 +81,12 @@ class Level:
         elif len(self.enemies) == 0 and self.current_wave == len(self.waves) - 1:
             self.all_waves_complete = True
 
-    def draw_path(self, screen):
+    def draw_path(self, screen, draw_position=False):
         pygame.draw.lines(screen, (0, 128, 0), False, self.game.settings.enemy_path, 5)
         '''Задача №1. Убрать постоянное отображение позиций'''
-        # for pos in self.game.settings.tower_positions:
-        #     pygame.draw.circle(screen, (128, 0, 0), pos, 10)
+        if draw_position == True:
+            for pos in self.game.settings.tower_positions:
+                pygame.draw.circle(screen, (128, 0, 0), pos, 10)
 
     def draw(self, screen):
         self.draw_path(screen)
