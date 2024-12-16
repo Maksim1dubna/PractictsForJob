@@ -8,7 +8,9 @@ from grid import Grid
 class TowerDefenseGame:
     def __init__(self):
         pygame.init()
+
         self.settings = Settings()
+
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption("Tower Defense Game")
         self.clock = pygame.time.Clock()
@@ -22,7 +24,6 @@ class TowerDefenseGame:
 
         self.font = pygame.font.SysFont("Arial", 24)
 
-        self.shoot_sound = pygame.mixer.Sound(self.settings.shoot_sound)
         self.selected_tower_type = 'basic'
         self.is_game_over = False
 
@@ -84,6 +85,7 @@ class TowerDefenseGame:
         if self.is_game_over:
             self._draw_game_over_screen()
         else:
+
             self.screen.blit(self.background, (0, 0))
             self.level.draw(self.screen)
             self.level.draw_path(self.screen, draw_position=space_event)

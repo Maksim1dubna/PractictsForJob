@@ -1,10 +1,14 @@
 import pygame
 from enemy import Enemy
 from tower import BasicTower, SniperTower
+from settings import Settings
 
 
 class Level:
     def __init__(self, game):
+
+        self.settings = Settings()
+
         self.game = game
         self.enemies = pygame.sprite.Group()
         self.towers = pygame.sprite.Group()
@@ -25,6 +29,7 @@ class Level:
         self.start_next_wave()
         self.font = pygame.font.SysFont("Arial", 24)
 
+
     def start_next_wave(self):
         if self.current_wave < len(self.waves):
             self.spawned_enemies = 0
@@ -36,6 +41,9 @@ class Level:
             new_enemy = Enemy(**enemy_info, game=self.game)
             self.enemies.add(new_enemy)
             self.spawned_enemies += 1
+            '''Задача №2. Добавить звуки к выстрелам и появлению врагов'''
+            self.enemy_spawns_sound = pygame.mixer.Sound(self.settings.enemy_spawns_sound)
+            self.enemy_spawns_sound.play()
 
     def attempt_place_tower(self, mouse_pos, tower_type, placing_tower = False):
         '''Задача №1. Убрать постоянное отображение позиций'''
@@ -64,6 +72,9 @@ class Level:
                 self.enemies.add(new_enemy)
                 self.spawned_enemies += 1
                 self.last_spawn_time = current_time
+                '''Задача №2. Добавить звуки к выстрелам и появлению врагов'''
+                self.enemy_spawns_sound = pygame.mixer.Sound(self.settings.enemy_spawns_sound)
+                self.enemy_spawns_sound.play()
 
         collisions = pygame.sprite.groupcollide(self.bullets, self.enemies, True, False)
         for bullet in collisions:

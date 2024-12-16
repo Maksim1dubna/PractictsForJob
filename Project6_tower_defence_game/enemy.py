@@ -30,7 +30,6 @@ class Enemy(pygame.sprite.Sprite):
 
             self.position += direction * self.speed
             self.rect.center = self.position
-
             if self.position.distance_to(end_point) < self.speed:
                 self.path_index += 1
 

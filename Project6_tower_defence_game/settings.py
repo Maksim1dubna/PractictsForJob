@@ -24,11 +24,12 @@ class Settings:
         self.enemy_sprite = 'assets/enemies/basic_enemy.png'
         self.bullet_sprite = 'assets/bullets/basic_bullet.png'
         self.background_image = 'assets/backgrounds/game_background.png'
-
+        '''Задача №2. Добавить звуки к выстрелам и появлению врагов'''
         self.shoot_sound = 'assets/sounds/shoot.wav'
         self.upgrade_sound = 'assets/sounds/upgrade.wav'
         self.sell_sound = 'assets/sounds/sell.wav'
         self.enemy_hit_sound = 'assets/sounds/enemy_hit.wav'
+        self.enemy_spawns_sound = 'assets/sounds/enemy_spawns.wav'
         self.background_music = 'assets/sounds/background_music.mp3'
 
         self.starting_money = 500
