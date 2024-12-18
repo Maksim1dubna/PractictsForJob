@@ -36,6 +36,7 @@ class TowerDefenseGame:
 
     def _check_events(self):
         global space_event
+        global money_towers
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -47,6 +48,10 @@ class TowerDefenseGame:
                 elif event.key == pygame.K_2:
                     self.selected_tower_type = 'sniper'
                     print("Selected sniper tower.")
+                elif event.key == pygame.K_3:
+                    '''Задача №3. Добавить новый тип башни. Например, башня которая генерирует деньги.'''
+                    self.selected_tower_type = 'money'
+                    print("Selected money tower.")
                     '''Задача №1. Убрать постоянное отображение позиций'''
                 elif event.key == pygame.K_SPACE:
                     space_event = True
@@ -58,6 +63,8 @@ class TowerDefenseGame:
                     mouse_pos = pygame.mouse.get_pos()
                     '''Задача №1. Убрать постоянное отображение позиций'''
                     self.level.attempt_place_tower(mouse_pos, self.selected_tower_type, space_event)
+                    if self.selected_tower_type == 'money':
+                        money_towers += 1
                 else:
                     print("No tower type selected.")
 
@@ -93,7 +100,7 @@ class TowerDefenseGame:
             if space_event == True:
                 self.grid.draw()
 
-            money_text = self.font.render(f"Money: ${self.settings.starting_money}", True, (255, 255, 255))
+            money_text = self.font.render(f"Money: ${int(self.settings.starting_money)}", True, (255, 255, 255))
             tower_text = self.font.render(
                 f"Selected Tower: {self.selected_tower_type if self.selected_tower_type else 'None'}", True,
                 (255, 255, 255))
@@ -115,7 +122,11 @@ class TowerDefenseGame:
         '''Задача №1. Убрать постоянное отображение позиций'''
         global space_event
         space_event = False
+        global money_towers
+        money_towers = 0
         while True:
+            '''Задача №3. Добавить новый тип башни. Например, башня которая генерирует деньги.'''
+            self.settings.starting_money += money_towers * 0.08
             self._check_events()
             self._update_game()
 

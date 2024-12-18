@@ -3,6 +3,7 @@ from bullet import Bullet
 import math
 from settings import Settings
 
+
 class Tower(pygame.sprite.Sprite):
     def __init__(self, position, game):
         super().__init__()
@@ -28,7 +29,7 @@ class Tower(pygame.sprite.Sprite):
         mouse_pos = pygame.mouse.get_pos()
         if self.is_hovered(mouse_pos):
             level_text = self.game.font.render(f"Level: {self.level}", True, (255, 255, 255))
-            upgrade_cost_text = self.game.font.render(f"Upgrade: ${self.upgrade_cost()  }", True, (255, 255, 255))
+            upgrade_cost_text = self.game.font.render(f"Upgrade: ${self.upgrade_cost()}", True, (255, 255, 255))
 
             level_text_pos = (self.position.x, self.position.y + 20)
             upgrade_cost_pos = (self.position.x, self.position.y + 40)
@@ -115,3 +116,12 @@ class SniperTower(Tower):
     def shoot(self, target, bullets_group):
         new_bullet = Bullet(self.position, target.position, self.damage, self.game)
         bullets_group.add(new_bullet)
+
+
+class MoneyTower(Tower):
+    '''Задача №3. Добавить новый тип башни. Например, башня которая генерирует деньги.'''
+    def __init__(self, position, game):
+        super().__init__(position, game)
+        self.image = pygame.image.load('assets/towers/money_tower.png').convert_alpha()
+        self.original_image = self.image
+        self.rect = self.image.get_rect(center=self.position)
