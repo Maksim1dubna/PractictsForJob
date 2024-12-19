@@ -61,7 +61,7 @@ class TowerDefenseGame:
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if self.selected_tower_type:
                     mouse_pos = pygame.mouse.get_pos()
-                    '''Задача №1. Убрать постоянное отображение позиций'''
+                    '''Задача №1. Убрать постоянное отображение позиций''' 
                     self.level.attempt_place_tower(mouse_pos, self.selected_tower_type, space_event)
                     if self.selected_tower_type == 'money':
                         money_towers += 1

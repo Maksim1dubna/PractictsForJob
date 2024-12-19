@@ -2,7 +2,7 @@ import pygame
 from enemy import Enemy
 from tower import BasicTower, SniperTower, MoneyTower
 from settings import Settings
-
+import random
 
 class Level:
     def __init__(self, game):
@@ -13,12 +13,14 @@ class Level:
         self.enemies = pygame.sprite.Group()
         self.towers = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
+        '''Задача №4. Сделать несколько путей для врагов'''
+        self.random_path = [self.game.settings.enemy_path, self.game.settings.enemy_path_secret]
         self.waves = [
-            [{'path': self.game.settings.enemy_path, 'speed': 1, 'health': 100,
+            [{'path': random.choice(self.random_path), 'speed': 1, 'health': 100,
               'image_path': 'assets/enemies/basic_enemy.png'}] * 5,
-            [{'path': self.game.settings.enemy_path, 'speed': 1.5, 'health': 150,
+            [{'path': random.choice(self.random_path), 'speed': 1.5, 'health': 150,
               'image_path': 'assets/enemies/fast_enemy.png'}] * 7,
-            [{'path': self.game.settings.enemy_path, 'speed': 0.75, 'health': 200,
+            [{'path': random.choice(self.random_path), 'speed': 0.75, 'health': 200,
               'image_path': 'assets/enemies/strong_enemy.png'}] * 4,
         ]
         self.current_wave = 0
@@ -66,6 +68,8 @@ class Level:
 
         if self.current_wave < len(self.waves) and self.spawned_enemies < len(self.waves[self.current_wave]):
             if current_time - self.last_spawn_time > self.spawn_delay:
+                '''Задача №4. Сделать несколько путей для врагов'''
+                self.waves[self.current_wave][self.spawned_enemies].update({"path": random.choice(self.random_path)})
                 enemy_info = self.waves[self.current_wave][self.spawned_enemies].copy()
                 enemy_info['game'] = self.game
                 new_enemy = Enemy(**enemy_info)
@@ -94,6 +98,7 @@ class Level:
 
     def draw_path(self, screen, draw_position=False):
         pygame.draw.lines(screen, (0, 128, 0), False, self.game.settings.enemy_path, 5)
+        pygame.draw.lines(screen, (0, 128, 0), False, self.game.settings.enemy_path_secret, 5)
         '''Задача №1. Убрать постоянное отображение позиций'''
         if draw_position == True:
             for pos in self.game.settings.tower_positions:
