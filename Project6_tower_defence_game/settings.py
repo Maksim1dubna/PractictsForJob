@@ -38,7 +38,7 @@ class Settings:
         self.enemy_spawns_sound = 'assets/sounds/enemy_spawns.wav'
         self.background_music = 'assets/sounds/background_music.mp3'
 
-        self.starting_money = 500
+        self.starting_money = 10000
         self.lives = 20
 
         self.tower_positions = [(x * self.grid_size[0] + self.grid_size[0] // 2, y * self.grid_size[1] + self.grid_size[1] // 2)

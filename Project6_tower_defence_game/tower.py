@@ -2,6 +2,8 @@ import pygame
 from bullet import Bullet
 import math
 from settings import Settings
+global once
+once = True
 
 
 class Tower(pygame.sprite.Sprite):
@@ -26,8 +28,22 @@ class Tower(pygame.sprite.Sprite):
         return 100 * self.level
 
     def draw(self, screen):
+        global once
         mouse_pos = pygame.mouse.get_pos()
+        buttons = pygame.mouse.get_pressed()
+        '''Задача №5. Добавить систему улучшений башен'''
         if self.is_hovered(mouse_pos):
+            if buttons[2] == False:
+                once = True
+            if self.game.settings.starting_money >= self.upgrade_cost() and buttons[2] and once == True:
+                once = False
+                self.level += 1
+                self.damage += self.damage * 0.2
+                self.tower_range += self.tower_range * 0.2
+                self.game.settings.starting_money -= self.upgrade_cost()
+            elif self.game.settings.starting_money <= self.upgrade_cost() and buttons[2] and once == True:
+                once = False
+                print("Not enough money to upgrade")
             level_text = self.game.font.render(f"Level: {self.level}", True, (255, 255, 255))
             upgrade_cost_text = self.game.font.render(f"Upgrade: ${self.upgrade_cost()}", True, (255, 255, 255))
 
@@ -120,6 +136,7 @@ class SniperTower(Tower):
 
 class MoneyTower(Tower):
     '''Задача №3. Добавить новый тип башни. Например, башня которая генерирует деньги.'''
+
     def __init__(self, position, game):
         super().__init__(position, game)
         self.image = pygame.image.load('assets/towers/money_tower.png').convert_alpha()
