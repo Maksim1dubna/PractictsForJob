@@ -1,6 +1,6 @@
 import pygame
 from pygame.math import Vector2
-
+from settings import Settings
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, path, speed=2, health=10, image_path=None, game = None):
@@ -21,6 +21,8 @@ class Enemy(pygame.sprite.Sprite):
         self.health -= amount
         if self.health <= 0:
             self.kill()
+            '''Задача №6. Увеличивать количество денег игрока при уничтожении врагов'''
+            self.game.settings.starting_money += 100
 
     def update(self):
         if self.path_index < len(self.path) - 1:
