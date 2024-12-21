@@ -4,6 +4,7 @@ from tower import BasicTower, SniperTower, MoneyTower
 from settings import Settings
 import random
 
+
 class Level:
     def __init__(self, game):
 
@@ -15,6 +16,8 @@ class Level:
         self.bullets = pygame.sprite.Group()
         '''Задача №4. Сделать несколько путей для врагов'''
         self.random_path = [self.game.settings.enemy_path, self.game.settings.enemy_path_secret]
+        '''Задача №7. Создать более разнообразных врагов.'''
+        '''Задача №8. Добавить больше волн врагов'''
         self.waves = [
             [{'path': random.choice(self.random_path), 'speed': 1, 'health': 100,
               'image_path': 'assets/enemies/basic_enemy.png'}] * 5,
@@ -22,6 +25,8 @@ class Level:
               'image_path': 'assets/enemies/fast_enemy.png'}] * 7,
             [{'path': random.choice(self.random_path), 'speed': 0.75, 'health': 200,
               'image_path': 'assets/enemies/strong_enemy.png'}] * 4,
+            [{'path': random.choice(self.random_path), 'speed': 2, 'health': 1000,
+              'image_path': 'assets/enemies/hardcore_enemy.png'}] * 10,
         ]
         self.current_wave = 0
         self.spawned_enemies = 0
@@ -30,7 +35,6 @@ class Level:
         self.all_waves_complete = False
         self.start_next_wave()
         self.font = pygame.font.SysFont("Arial", 24)
-
 
     def start_next_wave(self):
         if self.current_wave < len(self.waves):
@@ -47,7 +51,7 @@ class Level:
             self.enemy_spawns_sound = pygame.mixer.Sound(self.settings.enemy_spawns_sound)
             self.enemy_spawns_sound.play()
 
-    def attempt_place_tower(self, mouse_pos, tower_type, placing_tower = False):
+    def attempt_place_tower(self, mouse_pos, tower_type, placing_tower=False):
         '''Задача №1. Убрать постоянное отображение позиций'''
         if placing_tower == True:
             tower_classes = {'basic': BasicTower, 'sniper': SniperTower, 'money': MoneyTower}
@@ -95,6 +99,24 @@ class Level:
             self.start_next_wave()
         elif len(self.enemies) == 0 and self.current_wave == len(self.waves) - 1:
             self.all_waves_complete = True
+        '''Задача №8. Добавить больше волн врагов'''
+        try:
+            if len(self.enemies) != 0 and self.current_wave == len(self.waves) - 1:
+                speed = [0.75, 1, 1.5, 2]
+                spd = random.choice(speed)
+                health = [100, 150, 200, 1000]
+                hp = random.choice(health)
+                if spd == 2 or hp == 1000:
+                    self.waves[self.current_wave][self.spawned_enemies].update({'image_path': 'assets/enemies/hardcore_enemy.png'})
+                    self.waves[self.current_wave][self.spawned_enemies].update({"speed": spd})
+                    self.waves[self.current_wave][self.spawned_enemies].update({"health": hp})
+                else:
+                    self.waves[self.current_wave][self.spawned_enemies].update(
+                        {'image_path': 'assets/enemies/strong_enemy.png'})
+                    self.waves[self.current_wave][self.spawned_enemies].update({"speed": spd})
+                    self.waves[self.current_wave][self.spawned_enemies].update({"health": hp})
+        except:
+            pass
 
     def draw_path(self, screen, draw_position=False):
         pygame.draw.lines(screen, (0, 128, 0), False, self.game.settings.enemy_path, 5)
